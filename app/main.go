@@ -24,6 +24,12 @@ func main () {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
+	e.GET("/public", func(c echo.Context) error {
+		return c.String(http.StatusOK, "hello public!")
+	})
+	e.GET("/private", func(c echo.Context) error {
+		return c.String(http.StatusOK, "hello private!")
+	})
 	// Start server
 	e.Logger.Fatal(e.Start(":8082"))
 }
