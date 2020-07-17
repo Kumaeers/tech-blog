@@ -1,12 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import firebase from 'firebase/app'
+import 'firebase/auth'
 import HelloWorld from '@/components/HelloWorld'
 import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '*',
@@ -15,7 +18,8 @@ export default new Router({
     {
       path: '/',
       name: 'HelloWorld',
-      component: HelloWorld
+      component: HelloWorld,
+      meta: { requiresAuth: true }
     },
     {
       path: '/signup',
@@ -29,3 +33,14 @@ export default new Router({
     }
   ]
 })
+
+// router.beforeEach()を追加
+router.beforeEach((to, from, next) => {
+  let currentUser = firebase.auth().currentUser
+  let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  if (requiresAuth && !currentUser) next('signin')
+  else if (!requiresAuth && currentUser) next()
+  else next()
+})
+
+export default router
