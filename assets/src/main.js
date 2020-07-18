@@ -8,6 +8,7 @@ import 'firebase/auth'
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 
+let app
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_API_KEY,
   authDomain: process.env.VUE_APP_AUTH_DOMAIN,
@@ -20,7 +21,12 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig)
-new Vue({
-  router,
-  render: h => h(App),
-}).$mount('#app')
+firebase.auth().onAuthStateChanged(user => {
+  if (!app) {
+    new Vue({
+      router,
+      render: h => h(App),
+    }).$mount('#app')
+  }
+  console.log(user)
+})
