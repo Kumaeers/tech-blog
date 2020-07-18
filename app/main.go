@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"app/repository"
 
@@ -11,6 +13,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	firebase "firebase.google.com/go"
+	"google.golang.org/api/option"
 )
 
 var db *sqlx.DB
@@ -29,7 +34,7 @@ func main () {
 	})
 	e.GET("/private", func(c echo.Context) error {
 		return c.String(http.StatusOK, "hello private!")
-	})
+	}, firebaseMiddleware())
 	// Start server
 	e.Logger.Fatal(e.Start(":8082"))
 }
@@ -58,4 +63,36 @@ func createMux() *echo.Echo {
 
 	// アプリケーションインスタンスを返却
 return e
+}
+
+// JWTを検証する
+func firebaseMiddleware() echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			// Firebase SDK のセットアップ
+			opt := option.WithCredentialsFile(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+			app, err := firebase.NewApp(context.Background(), nil, opt)
+			if err != nil {
+				return err
+			}
+
+			client, err := app.Auth(context.Background())
+			if err != nil {
+				return err
+			}
+
+			// クライアントから送られてきた JWT 取得
+			auth := c.Request().Header.Get("Authorization")
+			idToken := strings.Replace(auth, "Bearer ", "", 1)
+
+			// JWT の検証
+			token, err := client.VerifyIDToken(context.Background(), idToken)
+			if err != nil {
+				return err
+			}
+
+			c.Set("token", token)
+			return next(c)
+		}
+	}
 }
