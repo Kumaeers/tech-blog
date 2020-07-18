@@ -16,3 +16,6 @@ tmp/runner-build
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# firebaseの接続情報
+tech-blog-*.json
