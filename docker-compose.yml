@@ -6,11 +6,11 @@ services:
     container_name: tech-blog-vue
     ports:
       - 8080:8080
-    volumes:
-      - .:/app
-    working_dir: /app
+    # volumes:
+    #   - .:/app
+    # working_dir: /app
     tty: true
-    command: sh -c "cd assets && yarn install && yarn serve"
+    # command: sh -c "yarn install && yarn serve"
 
   go:
     build:
