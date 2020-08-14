@@ -10,4 +10,4 @@ ENV GO111MODULE="on"
 RUN go get github.com/pilu/fresh
 
 # マイグレーションツールの導入
-RUN go get -u bitbucket.org/liamstask/goose/cmd/goose
+RUN go get -v github.com/rubenv/sql-migrate/...
