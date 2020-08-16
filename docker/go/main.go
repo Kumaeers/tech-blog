@@ -21,7 +21,7 @@ import (
 var db *sqlx.DB
 var e = createMux()
 
-func main () {
+func main() {
 	db = connectDB()
 	repository.SetDB(db)
 
@@ -43,10 +43,10 @@ func connectDB() *sqlx.DB {
 	dsn := os.Getenv("DSN")
 	db, err := sqlx.Open("mysql", dsn)
 	if err != nil {
-			 e.Logger.Fatal(err)
+		e.Logger.Fatal(err)
 	}
 	if err := db.Ping(); err != nil {
-			 e.Logger.Fatal(err)
+		e.Logger.Fatal(err)
 	}
 	log.Println("db connection succeeded")
 	return db
@@ -62,7 +62,7 @@ func createMux() *echo.Echo {
 	e.Use(middleware.Gzip())
 
 	// アプリケーションインスタンスを返却
-return e
+	return e
 }
 
 // JWTを検証する

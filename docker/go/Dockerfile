@@ -3,6 +3,14 @@ FROM golang:latest
 RUN apt-get update && \
     apt-get install -y default-mysql-client
 
+RUN mkdir /app
+WORKDIR /app
+
+COPY go.mod ./
+RUN go mod download
+
+COPY . .
+
 # Go Modulesを使うと明言する
 ENV GO111MODULE="on"
 
