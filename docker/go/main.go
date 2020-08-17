@@ -7,8 +7,6 @@ import (
 	"os"
 	"strings"
 
-	"app/repository"
-
 	_ "github.com/go-sql-driver/mysql" // Using MySQL driver
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
@@ -22,8 +20,8 @@ var db *sqlx.DB
 var e = createMux()
 
 func main() {
-	db = connectDB()
-	repository.SetDB(db)
+	// db = connectDB()
+	// repository.SetDB(db)
 
 	// Routes
 	e.GET("/", func(c echo.Context) error {

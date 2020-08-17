@@ -1,21 +1,20 @@
-FROM golang:latest
+FROM golang:1.14.4 as builder
 
-RUN apt-get update && \
-    apt-get install -y default-mysql-client
+WORKDIR /go/src
 
-RUN mkdir /app
-WORKDIR /app
-
-COPY go.mod ./
+COPY go.mod go.sum ./
 RUN go mod download
 
-COPY . .
+COPY ./main.go  ./
 
-# Go Modulesを使うと明言する
-ENV GO111MODULE="on"
+ARG CGO_ENABLED=0
+ARG GOOS=linux
+ARG GOARCH=amd64
+RUN go build \
+    -o /go/bin/main \
+    -ldflags '-s -w'
 
-# ホットリロード機能を付与
-RUN go get github.com/pilu/fresh
-
-# マイグレーションツールの導入
-RUN go get -v github.com/rubenv/sql-migrate/...
+FROM scratch as runner
+COPY --from=builder /go/bin/main /app/main
+EXPOSE 8082
+ENTRYPOINT ["/app/main"]
