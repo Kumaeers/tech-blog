@@ -30,7 +30,7 @@ export default {
       })
     },
     apiPublic: async function () {
-      let res = await axios.get('http://localhost/api/public')
+      let res = await axios.get('https://kumaeers-blog.com/api/public')
       this.msg = res.data
     },
     apiPrivate: async function () {
