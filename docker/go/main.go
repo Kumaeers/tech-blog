@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app/repository"
 	"context"
 	"log"
 	"net/http"
@@ -20,8 +21,8 @@ var db *sqlx.DB
 var e = createMux()
 
 func main() {
-	// db = connectDB()
-	// repository.SetDB(db)
+	db = connectDB()
+	repository.SetDB(db)
 
 	// Routes
 	e.GET("/", func(c echo.Context) error {

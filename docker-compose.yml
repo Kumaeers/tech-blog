@@ -16,13 +16,10 @@ services:
     ports:
       - 8082:8082
     environment:
-      DSN: "root:password@tcp(docker.for.mac.localhost:3306)/techblog?parseTime=true&autocommit=0&sql_mode=%27TRADITIONAL,NO_AUTO_VALUE_ON_ZERO,ONLY_FULL_GROUP_BY%27"
+      DSN: "root:password@tcp(host.docker.internal:3306)/tech-blog?parseTime=true"
       GOOGLE_APPLICATION_CREDENTIALS: "/go/src/app/tech-blog-46ddd-firebase-adminsdk-yhjjs-9fe209e75b.json"
-    # volumes:
-    #   - .:/go/src
-    # working_dir: /go/src/app
     tty: true
-    # command: fresh
+    command: fresh
 
   nginx:
     image: nginx
