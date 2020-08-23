@@ -1,13 +1,5 @@
-# 開発環境
-FROM golang:1.14.4 as dev
-WORKDIR /go/src
-# Go Modulesを使うと明言する
-ENV GO111MODULE="on"
-# ホットリロード機能を付与
-RUN go get github.com/pilu/fresh
-
-# 本番ビルド用
-FROM golang:1.14.4 as builder
+# ビルドステージ
+FROM golang:1.14.4 as build-stage
 WORKDIR /go/src
 COPY go.mod go.sum ./
 RUN go mod download
@@ -19,8 +11,8 @@ RUN go build \
     -o /go/bin/main \
     -ldflags '-s -w'
 
-# 本番用
-FROM scratch as runner
-COPY --from=builder /go/bin/main /app/main
+# 本番環境
+FROM scratch as production-stage
+COPY --from=build-stage /go/bin/main /app/main
 EXPOSE 8082
 ENTRYPOINT ["/app/main"]

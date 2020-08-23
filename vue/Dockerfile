@@ -1,10 +1,3 @@
-# 開発環境
-FROM node:lts-alpine as dev
-WORKDIR /app
-RUN apk update && \
-    npm install -g npm && \
-    npm install -g @vue/cli
-
 # ビルド環境
 FROM node:lts-alpine as build-stage
 WORKDIR /app
