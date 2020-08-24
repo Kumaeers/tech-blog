@@ -22,6 +22,6 @@ phases:
   # imagedefinitions.jsonファイルの作成
   post_build:
     commands:
-    - printf '[{"name":"tech-blog","imageUri":"%s"},{"name":"go","imageUri":"%s"}]' $IMAGE:vue, $IMAGE:go > imagedefinitions.json
+    - printf '[{"name":"tech-blog","imageUri":"%s"},{"name":"go","imageUri":"%s"}]' $IMAGE:vue $IMAGE:go > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
