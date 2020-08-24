@@ -10,16 +10,18 @@ phases:
   pre_build:
     commands:
     - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-    - REPO=$(aws ecr describe-repositories --repository-names example --output text --query "repositories[0].repositoryUri")
-    - IMAGE=$REPO:latest
+    - REPO=$(aws ecr describe-repositories --repository-names tech-blog --output text --query "repositories[0].repositoryUri")
+    - IMAGE=$REPO
   # Docker イメージのビルドとプッシュ
   build:
     commands:
-    - docker build -t $IMAGE .
-    - docker push $IMAGE
+    - docker build -t $IMAGE:vue ./vue
+    - docker build -t $IMAGE:go ./go
+    - docker push $IMAGE:vue
+    - docker push $IMAGE:go
   # imagedefinitions.jsonファイルの作成
   post_build:
     commands:
-    - printf '[{"name":"example","imageUri":"%s"}]' $IMAGE > imagedefinitions.json
+    - printf '[{"name":"tech-blog","imageUri":"%s"}]' $IMAGE > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
