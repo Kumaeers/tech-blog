@@ -1,0 +1,5 @@
+development:
+  dialect: mysql
+  datasource: root:password@tcp(host.docker.internal:3306)/tech-blog?parseTime=true
+  dir: db/migrations
+  table: migrations

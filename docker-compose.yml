@@ -1,43 +1,40 @@
-version: '3'
+version: '3.7'
 services:
   vue:
     build:
-      context: ./docker/vue
+      context: ./dev/vue
     container_name: tech-blog-vue
+    tty: true
     ports:
       - 8080:8080
     volumes:
-      - .:/app
-    working_dir: /app
+      - ./vue:/app
     tty: true
-    command: sh -c "cd assets && yarn install && yarn serve"
+    command: sh -c "yarn install && yarn serve"
 
   go:
     build:
-      context: ./docker/go
+      context: ./dev/go
     container_name: tech-blog-go
     ports:
       - 8082:8082
     environment:
-      DSN: "root:password@tcp(docker.for.mac.localhost:3306)/techblog?parseTime=true&autocommit=0&sql_mode=%27TRADITIONAL,NO_AUTO_VALUE_ON_ZERO,ONLY_FULL_GROUP_BY%27"
+      DSN: "root:password@tcp(host.docker.internal:3306)/tech-blog?parseTime=true"
       GOOGLE_APPLICATION_CREDENTIALS: "/go/src/app/tech-blog-46ddd-firebase-adminsdk-yhjjs-9fe209e75b.json"
     volumes:
-      - .:/go/src
-    working_dir: /go/src/app
+      - ./go:/go/src
     tty: true
     command: fresh
 
   nginx:
     image: nginx
-    depends_on:
-      - go
     container_name: tech-blog-nginx
     ports:
       - 80:80
     environment:
       - TZ=Asia/Tokyo
     volumes:
-      - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./dev/nginx/nginx.conf:/etc/nginx/nginx.conf
 
   db:
     image: mysql:8
@@ -52,4 +49,3 @@ services:
 
 volumes:
   db-data:
-    driver: local
