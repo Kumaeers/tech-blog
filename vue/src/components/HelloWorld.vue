@@ -30,11 +30,13 @@ export default {
       })
     },
     apiPublic: async function () {
-      let res = await axios.get('https://kumaeers-blog.com/api/public')
+      let res = await axios.get('http://tech-blog-1776832188.ap-northeast-1.elb.amazonaws.com/api/public')
+      // let res = await axios.get('https://kumaeers-blog.com/api/public')
       this.msg = res.data
     },
     apiPrivate: async function () {
-      let res = await axios.get('https://kumaeers-blog.com/api/private', {
+      let res = await axios.get('http://tech-blog-1776832188.ap-northeast-1.elb.amazonaws.com/api/private', {
+      // let res = await axios.get('https://kumaeers-blog.com/api/private', {
         headers: {'Authorization': `Bearer ${localStorage.getItem('jwt')}`}
       })
       this.msg = res.data
