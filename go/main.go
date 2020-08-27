@@ -69,7 +69,8 @@ func firebaseMiddleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			// Firebase SDK のセットアップ
-			opt := option.WithCredentialsFile(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+			key := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+			opt := option.WithCredentialsJSON([]byte(key))
 			app, err := firebase.NewApp(context.Background(), nil, opt)
 			if err != nil {
 				return err

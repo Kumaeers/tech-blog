@@ -19,8 +19,9 @@ services:
     ports:
       - 8082:8082
     environment:
-      DSN: "root:password@tcp(host.docker.internal:3306)/tech-blog?parseTime=true"
-      GOOGLE_APPLICATION_CREDENTIALS: "/go/src/tech-blog-46ddd-firebase-adminsdk-yhjjs-9fe209e75b.json"
+      DSN: "root:password@tcp(host.docker.internal:3306)/mysql?parseTime=true"
+      # GOOGLE_APPLICATION_CREDENTIALS: "/go/src/tech-blog-46ddd-firebase-adminsdk-yhjjs-9fe209e75b.json"
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
     volumes:
       - ./go:/go/src
     tty: true
