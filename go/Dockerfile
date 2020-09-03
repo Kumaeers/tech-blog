@@ -14,5 +14,6 @@ RUN go build \
 # 本番環境
 FROM scratch as production-stage
 COPY --from=build-stage /go/bin/main /app/main
+COPY --from=build-stage /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 EXPOSE 8082
 ENTRYPOINT ["/app/main"]

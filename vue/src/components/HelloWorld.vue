@@ -11,6 +11,7 @@
 
 <script>
 import axios from 'axios'
+const baseUrl = process.env.VUE_APP_API_BASE_URL;
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
@@ -30,11 +31,11 @@ export default {
       })
     },
     apiPublic: async function () {
-      let res = await axios.get('https://kumaeers-blog.com/api/public')
+      let res = await axios.get(`${baseUrl}public`)
       this.msg = res.data
     },
     apiPrivate: async function () {
-      let res = await axios.get('http://localhost/api/private', {
+      let res = await axios.get(`${baseUrl}private`, {
         headers: {'Authorization': `Bearer ${localStorage.getItem('jwt')}`}
       })
       this.msg = res.data
